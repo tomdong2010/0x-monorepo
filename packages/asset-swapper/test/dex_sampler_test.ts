@@ -207,6 +207,47 @@ describe('DexSampler tests', () => {
             ]);
         });
 
+        it('getMultiBridgeSellQuotes()', async () => {
+            const expectedTakerToken = randomAddress();
+            const expectedMakerToken = randomAddress();
+            const multiBridgeRegistry = randomAddress();
+
+            const sampler = new MockSamplerContract({
+                sampleSellsFromMultiBridgeRegistry: (
+                    registryAddress,
+                    takerToken,
+                    intermediateToken,
+                    makerToken,
+                    fillAmounts,
+                ) => {
+                    expect(registryAddress).to.eq(multiBridgeRegistry);
+                    expect(takerToken).to.eq(expectedTakerToken);
+                    expect(makerToken).to.eq(expectedMakerToken);
+                    return [toBaseUnitAmount(1001)];
+                },
+            });
+            const dexOrderSampler = new DexOrderSampler(sampler);
+            const [result] = await dexOrderSampler.executeAsync(
+                DexOrderSampler.ops.getSellQuotes(
+                    [ERC20BridgeSource.MultiBridge],
+                    expectedMakerToken,
+                    expectedTakerToken,
+                    [toBaseUnitAmount(1000)],
+                    randomAddress(),
+                    multiBridgeRegistry,
+                ),
+            );
+            expect(result).to.deep.equal([
+                [
+                    {
+                        source: 'MultiBridge',
+                        output: toBaseUnitAmount(1001),
+                        input: toBaseUnitAmount(1000),
+                    },
+                ],
+            ]);
+        });
+
         it('getEth2DaiSellQuotes()', async () => {
             const expectedTakerToken = randomAddress();
             const expectedMakerToken = randomAddress();

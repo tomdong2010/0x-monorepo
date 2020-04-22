@@ -29,6 +29,10 @@
             {
                 "note": "Added `ERC20BridgeSampler.sampleSellsFromUniswapV2",
                 "pr": 2595
+            },
+            {
+                "note": "Regenerate wrappers for ERC20BridgeSampler, DevUtils, Coordinator",
+                "pr": 2593
             }
         ]
     },

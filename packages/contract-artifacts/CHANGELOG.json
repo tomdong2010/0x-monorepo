@@ -25,6 +25,10 @@
             {
                 "note": "Added `ERC20BridgeSampler.sampleSellsFromUniswapV2",
                 "pr": 2595
+            },
+            {
+                "note": "Update artifacts for 0.5.17",
+                "pr": 2593
             }
         ]
     },
