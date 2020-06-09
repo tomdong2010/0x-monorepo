@@ -326,6 +326,7 @@ export async function runMigrationsAsync(
         dexForwarderBridge: NULL_ADDRESS,
         exchangeProxy: NULL_ADDRESS,
         exchangeProxyAllowanceTarget: NULL_ADDRESS,
+        exchangeProxyTransformerDeployer: NULL_ADDRESS,
         transformers: {
             wethTransformer: NULL_ADDRESS,
             payTakerTransformer: NULL_ADDRESS,
