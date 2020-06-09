@@ -210,17 +210,17 @@ describe('DexSampler tests', () => {
         it('getMultiBridgeSellQuotes()', async () => {
             const expectedTakerToken = randomAddress();
             const expectedMakerToken = randomAddress();
-            const multiBridgeRegistry = randomAddress();
+            const multiBridge = randomAddress();
 
             const sampler = new MockSamplerContract({
-                sampleSellsFromMultiBridgeRegistry: (
-                    registryAddress,
+                sampleSellsFromMultiBridge: (
+                    multiBridgeAddress,
                     takerToken,
-                    intermediateToken,
+                    _intermediateToken,
                     makerToken,
-                    fillAmounts,
+                    _fillAmounts,
                 ) => {
-                    expect(registryAddress).to.eq(multiBridgeRegistry);
+                    expect(multiBridgeAddress).to.eq(multiBridge);
                     expect(takerToken).to.eq(expectedTakerToken);
                     expect(makerToken).to.eq(expectedMakerToken);
                     return [toBaseUnitAmount(1001)];
@@ -234,7 +234,7 @@ describe('DexSampler tests', () => {
                     expectedTakerToken,
                     [toBaseUnitAmount(1000)],
                     randomAddress(),
-                    multiBridgeRegistry,
+                    multiBridge,
                 ),
             );
             expect(result).to.deep.equal([

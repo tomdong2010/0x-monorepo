@@ -595,7 +595,7 @@ contract ERC20BridgeSampler is
     }
 
     /// @dev Sample sell quotes from MultiBridge.
-    /// @param registryAddress Address of the MultiBridge registry contract.
+    /// @param multibridge Address of the MultiBridge contract.
     /// @param takerToken Address of the taker token (what to sell).
     /// @param intermediateToken The address of the intermediate token to
     ///        use in an indirect route.
@@ -603,8 +603,8 @@ contract ERC20BridgeSampler is
     /// @param takerTokenAmounts Taker token sell amount for each sample.
     /// @return makerTokenAmounts Maker amounts bought at each taker token
     ///         amount.
-    function sampleSellsFromMultiBridgeRegistry(
-        address registryAddress,
+    function sampleSellsFromMultiBridge(
+        address multibridge,
         address takerToken,
         address intermediateToken,
         address makerToken,
@@ -618,20 +618,14 @@ contract ERC20BridgeSampler is
         uint256 numSamples = takerTokenAmounts.length;
         makerTokenAmounts = new uint256[](numSamples);
 
-        // Query registry for provider address.
-        address providerAddress = getLiquidityProviderFromRegistry(
-            registryAddress,
-            takerToken,
-            makerToken
-        );
-        // If provider doesn't exist, return all zeros.
-        if (providerAddress == address(0)) {
+        // If no address provided, return all zeros.
+        if (multibridge == address(0)) {
             return makerTokenAmounts;
         }
 
         for (uint256 i = 0; i < numSamples; i++) {
             (bool didSucceed, bytes memory resultData) =
-                providerAddress.staticcall.gas(DEFAULT_CALL_GAS)(
+                multibridge.staticcall.gas(DEFAULT_CALL_GAS)(
                     abi.encodeWithSelector(
                         IMultiBridge(0).getSellQuote.selector,
                         takerToken,

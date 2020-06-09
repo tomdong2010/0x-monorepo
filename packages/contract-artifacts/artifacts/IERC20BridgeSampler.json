@@ -247,13 +247,13 @@
             {
                 "constant": true,
                 "inputs": [
-                    { "internalType": "address", "name": "registryAddress", "type": "address" },
+                    { "internalType": "address", "name": "multibridge", "type": "address" },
                     { "internalType": "address", "name": "takerToken", "type": "address" },
                     { "internalType": "address", "name": "intermediateToken", "type": "address" },
                     { "internalType": "address", "name": "makerToken", "type": "address" },
                     { "internalType": "uint256[]", "name": "takerTokenAmounts", "type": "uint256[]" }
                 ],
-                "name": "sampleSellsFromMultiBridgeRegistry",
+                "name": "sampleSellsFromMultiBridge",
                 "outputs": [{ "internalType": "uint256[]", "name": "makerTokenAmounts", "type": "uint256[]" }],
                 "payable": false,
                 "stateMutability": "view",
@@ -411,12 +411,12 @@
                     },
                     "return": "makerTokenAmounts Maker amounts bought at each taker token         amount."
                 },
-                "sampleSellsFromMultiBridgeRegistry(address,address,address,address,uint256[])": {
+                "sampleSellsFromMultiBridge(address,address,address,address,uint256[])": {
                     "details": "Sample sell quotes from MultiBridge.",
                     "params": {
                         "intermediateToken": "The address of the intermediate token to        use in an indirect route.",
                         "makerToken": "Address of the maker token (what to buy).",
-                        "registryAddress": "Address of the MultiBridge registry contract.",
+                        "multibridge": "Address of the MultiBridge contract.",
                         "takerToken": "Address of the taker token (what to sell).",
                         "takerTokenAmounts": "Taker token sell amount for each sample."
                     },

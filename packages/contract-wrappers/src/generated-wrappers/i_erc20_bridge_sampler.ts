@@ -683,7 +683,7 @@ export class IERC20BridgeSamplerContract extends BaseContract {
                 constant: true,
                 inputs: [
                     {
-                        name: 'registryAddress',
+                        name: 'multibridge',
                         type: 'address',
                     },
                     {
@@ -703,7 +703,7 @@ export class IERC20BridgeSamplerContract extends BaseContract {
                         type: 'uint256[]',
                     },
                 ],
-                name: 'sampleSellsFromMultiBridgeRegistry',
+                name: 'sampleSellsFromMultiBridge',
                 outputs: [
                     {
                         name: 'makerTokenAmounts',
@@ -1399,7 +1399,7 @@ export class IERC20BridgeSamplerContract extends BaseContract {
     }
     /**
      * Sample sell quotes from MultiBridge.
-     * @param registryAddress Address of the MultiBridge registry contract.
+     * @param multibridge Address of the MultiBridge contract.
      * @param takerToken Address of the taker token (what to sell).
      * @param intermediateToken The address of the intermediate token to        use
      *     in an indirect route.
@@ -1407,20 +1407,20 @@ export class IERC20BridgeSamplerContract extends BaseContract {
      * @param takerTokenAmounts Taker token sell amount for each sample.
      * @returns makerTokenAmounts Maker amounts bought at each taker token         amount.
      */
-    public sampleSellsFromMultiBridgeRegistry(
-        registryAddress: string,
+    public sampleSellsFromMultiBridge(
+        multibridge: string,
         takerToken: string,
         intermediateToken: string,
         makerToken: string,
         takerTokenAmounts: BigNumber[],
     ): ContractFunctionObj<BigNumber[]> {
         const self = (this as any) as IERC20BridgeSamplerContract;
-        assert.isString('registryAddress', registryAddress);
+        assert.isString('multibridge', multibridge);
         assert.isString('takerToken', takerToken);
         assert.isString('intermediateToken', intermediateToken);
         assert.isString('makerToken', makerToken);
         assert.isArray('takerTokenAmounts', takerTokenAmounts);
-        const functionSignature = 'sampleSellsFromMultiBridgeRegistry(address,address,address,address,uint256[])';
+        const functionSignature = 'sampleSellsFromMultiBridge(address,address,address,address,uint256[])';
 
         return {
             async callAsync(callData: Partial<CallData> = {}, defaultBlock?: BlockParam): Promise<BigNumber[]> {
@@ -1435,7 +1435,7 @@ export class IERC20BridgeSamplerContract extends BaseContract {
             },
             getABIEncodedTransactionData(): string {
                 return self._strictEncodeArguments(functionSignature, [
-                    registryAddress.toLowerCase(),
+                    multibridge.toLowerCase(),
                     takerToken.toLowerCase(),
                     intermediateToken.toLowerCase(),
                     makerToken.toLowerCase(),

@@ -120,7 +120,7 @@ export const samplerOperations = {
         };
     },
     getMultiBridgeSellQuotes(
-        registryAddress: string,
+        multiBridgeAddress: string,
         makerToken: string,
         intermediateToken: string,
         takerToken: string,
@@ -129,8 +129,8 @@ export const samplerOperations = {
         return {
             encodeCall: contract => {
                 return contract
-                    .sampleSellsFromMultiBridgeRegistry(
-                        registryAddress,
+                    .sampleSellsFromMultiBridge(
+                        multiBridgeAddress,
                         takerToken,
                         intermediateToken,
                         makerToken,
@@ -255,7 +255,7 @@ export const samplerOperations = {
         takerToken: string,
         takerFillAmount: BigNumber,
         liquidityProviderRegistryAddress?: string,
-        multiBridgeRegistryAddress?: string,
+        multiBridgeAddress?: string,
     ): BatchedOperation<BigNumber> {
         if (makerToken.toLowerCase() === takerToken.toLowerCase()) {
             return samplerOperations.constant(new BigNumber(1));
@@ -266,7 +266,7 @@ export const samplerOperations = {
             takerToken,
             [takerFillAmount],
             liquidityProviderRegistryAddress,
-            multiBridgeRegistryAddress,
+            multiBridgeAddress,
         );
         return {
             encodeCall: contract => {
@@ -323,7 +323,7 @@ export const samplerOperations = {
         takerToken: string,
         takerFillAmounts: BigNumber[],
         liquidityProviderRegistryAddress?: string,
-        multiBridgeRegistryAddress?: string,
+        multiBridgeAddress?: string,
     ): BatchedOperation<DexSample[][]> {
         const subOps = sources
             .map(source => {
@@ -357,12 +357,12 @@ export const samplerOperations = {
                         takerFillAmounts,
                     );
                 } else if (source === ERC20BridgeSource.MultiBridge) {
-                    if (multiBridgeRegistryAddress === undefined) {
-                        throw new Error('Cannot sample liquidity from MultiBridge if a registry is not provided.');
+                    if (multiBridgeAddress === undefined) {
+                        throw new Error('Cannot sample liquidity from MultiBridge if an address is not provided.');
                     }
                     const intermediateToken = getMultiBridgeIntermediateToken(takerToken, makerToken);
                     batchedOperation = samplerOperations.getMultiBridgeSellQuotes(
-                        multiBridgeRegistryAddress,
+                        multiBridgeAddress,
                         makerToken,
                         intermediateToken,
                         takerToken,
@@ -405,7 +405,6 @@ export const samplerOperations = {
         takerToken: string,
         makerFillAmounts: BigNumber[],
         liquidityProviderRegistryAddress?: string,
-        multiBridgeRegistryAddress?: string,
         fakeBuyOpts: FakeBuyOpts = DEFAULT_FAKE_BUY_OPTS,
     ): BatchedOperation<DexSample[][]> {
         const subOps = sources
@@ -440,17 +439,6 @@ export const samplerOperations = {
                     }
                     batchedOperation = samplerOperations.getLiquidityProviderBuyQuotes(
                         liquidityProviderRegistryAddress,
-                        makerToken,
-                        takerToken,
-                        makerFillAmounts,
-                        fakeBuyOpts,
-                    );
-                } else if (source === ERC20BridgeSource.MultiBridge) {
-                    if (multiBridgeRegistryAddress === undefined) {
-                        throw new Error('Cannot sample liquidity from MultiBridge if a registry is not provided.');
-                    }
-                    batchedOperation = samplerOperations.getLiquidityProviderBuyQuotes(
-                        multiBridgeRegistryAddress,
                         makerToken,
                         takerToken,
                         makerFillAmounts,

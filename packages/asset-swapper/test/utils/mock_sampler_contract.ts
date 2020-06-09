@@ -28,7 +28,7 @@ export type SampleSellsLPHandler = (
     takerTokenAmounts: BigNumber[],
 ) => SampleResults;
 export type SampleSellsMBHandler = (
-    registryAddress: string,
+    multiBridgeAddress: string,
     takerToken: string,
     intermediateToken: string,
     makerToken: string,
@@ -46,7 +46,7 @@ interface Handlers {
     getOrderFillableTakerAssetAmounts: GetOrderFillableAssetAmountHandler;
     sampleSellsFromKyberNetwork: SampleSellsHandler;
     sampleSellsFromLiquidityProviderRegistry: SampleSellsLPHandler;
-    sampleSellsFromMultiBridgeRegistry: SampleSellsMBHandler;
+    sampleSellsFromMultiBridge: SampleSellsMBHandler;
     sampleSellsFromEth2Dai: SampleSellsHandler;
     sampleSellsFromUniswap: SampleSellsHandler;
     sampleBuysFromEth2Dai: SampleBuysHandler;
@@ -151,17 +151,17 @@ export class MockSamplerContract extends IERC20BridgeSamplerContract {
         );
     }
 
-    public sampleSellsFromMultiBridgeRegistry(
-        registryAddress: string,
+    public sampleSellsFromMultiBridge(
+        multiBridgeAddress: string,
         takerToken: string,
         intermediateToken: string,
         makerToken: string,
         takerAssetAmounts: BigNumber[],
     ): ContractFunctionObj<GetOrderFillableAssetAmountResult> {
         return this._wrapCall(
-            super.sampleSellsFromMultiBridgeRegistry,
-            this._handlers.sampleSellsFromMultiBridgeRegistry,
-            registryAddress,
+            super.sampleSellsFromMultiBridge,
+            this._handlers.sampleSellsFromMultiBridge,
+            multiBridgeAddress,
             takerToken,
             intermediateToken,
             makerToken,
