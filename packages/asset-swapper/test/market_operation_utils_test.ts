@@ -263,6 +263,7 @@ describe('MarketOperationUtils tests', () => {
         [ERC20BridgeSource.CurveUsdcDaiUsdtBusd]: _.times(NUM_SAMPLES, () => 0),
         [ERC20BridgeSource.CurveUsdcDaiUsdtSusd]: _.times(NUM_SAMPLES, () => 0),
         [ERC20BridgeSource.LiquidityProvider]: _.times(NUM_SAMPLES, () => 0),
+        [ERC20BridgeSource.MultiBridge]: _.times(NUM_SAMPLES, () => 0),
     };
 
     const DEFAULT_OPS = {

@@ -59,7 +59,7 @@
                 "pr": 2575
             },
             {
-                "note": "Updated Mainnet ERC20BridgeSampler address",
+                "note": "Updated Mainnet ERC20BridgeSampler address and add MultiBridge",
                 "pr": 2593
             }
         ]

@@ -47,15 +47,16 @@ async function getRfqtIndicativeQuotesAsync(
 
 export class MarketOperationUtils {
     private readonly _wethAddress: string;
+    private readonly _multiBridge: string;
 
     constructor(
         private readonly _sampler: DexOrderSampler,
         private readonly contractAddresses: ContractAddresses,
         private readonly _orderDomain: OrderDomain,
         private readonly _liquidityProviderRegistry?: string,
-        private readonly _multiBridge?: string,
     ) {
         this._wethAddress = contractAddresses.etherToken.toLowerCase();
+        this._multiBridge = contractAddresses.multiBridge.toLowerCase();
     }
 
     /**
@@ -77,7 +78,7 @@ export class MarketOperationUtils {
         const _opts = { ...DEFAULT_GET_MARKET_ORDERS_OPTS, ...opts };
         const [makerToken, takerToken] = getNativeOrderTokens(nativeOrders[0]);
         const optionalSources = (this._liquidityProviderRegistry ? [ERC20BridgeSource.LiquidityProvider] : []).concat(
-            this._multiBridge ? [ERC20BridgeSource.MultiBridge] : [],
+            this._multiBridge === NULL_ADDRESS ? [ERC20BridgeSource.MultiBridge] : [],
         );
 
         // Call the sampler contract.
@@ -160,7 +161,7 @@ export class MarketOperationUtils {
         const _opts = { ...DEFAULT_GET_MARKET_ORDERS_OPTS, ...opts };
         const [makerToken, takerToken] = getNativeOrderTokens(nativeOrders[0]);
         const optionalSources = (this._liquidityProviderRegistry ? [ERC20BridgeSource.LiquidityProvider] : []).concat(
-            this._multiBridge ? [ERC20BridgeSource.MultiBridge] : [],
+            this._multiBridge === NULL_ADDRESS ? [ERC20BridgeSource.MultiBridge] : [],
         );
         // Call the sampler contract.
         const samplerPromise = this._sampler.executeAsync(

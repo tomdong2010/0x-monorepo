@@ -32,6 +32,7 @@ export interface ContractAddresses {
     chainlinkStopLimit: string;
     maximumGasPrice: string;
     dexForwarderBridge: string;
+    multiBridge: string;
 }
 
 export enum ChainId {
